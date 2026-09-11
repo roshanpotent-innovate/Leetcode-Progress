@@ -1,19 +1,19 @@
 #include<string.h>
 bool isPalindrome(char* s) {
-    int i = 0;
-    int j = strlen(s) - 1;
-    while(i<j){
-        while(i<j && !isalnum(s[i])){
-            i++;
+    int left = 0;
+    int right = strlen(s) - 1;
+    while(left<right){
+        while(left<right && !isalnum(s[left])){
+            left++;
         }
-        while(i<j && !isalnum(s[j])){
-            j--;
+        while(left<right && !isalnum(s[right])){
+            right--;
         }
-        if(tolower(s[i]) != tolower(s[j])){
+        if(tolower(s[left]) != tolower(s[right])){
             return false;
         }
-        i++;
-        j--;
+        left++;
+        right--;
     }
     return true;
 }
