@@ -1,28 +1,79 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
-    int *arr = malloc((nums1Size + nums2Size) * sizeof(int));
-    int k = 0;
-    for(int i = 0;i<nums1Size;i++){
-        int ax = 0;
-        for(int j = 0; j<k;j++){
-            if(arr[j] == nums1[i]){
-                ax = 1;
+int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size,
+                  int* returnSize) {
+    *returnSize = 0;
+    if (nums1Size == 0 || nums2Size == 0) {
+        return NULL;
+    }
+    int *smaller;
+    int *larger;
+    int smallSize, largeSize;
+    if (nums1Size <= nums2Size){
+        smaller = nums1;
+        larger = nums2;
+        smallSize = nums1Size;
+        largeSize = nums2Size;
+    }
+    else{
+        smaller = nums2;
+        larger = nums1;
+        smallSize = nums2Size;
+        largeSize = nums1Size;
+    }
+    int capacity = smallSize * 2 + 1;
+    int *table = malloc(capacity * sizeof(int));
+    bool *occupied = malloc(capacity * sizeof(bool));
+    if(table == NULL || occupied == NULL){
+        free(table);
+        free(occupied);
+        return NULL;
+    }
+    for(int i = 0; i<capacity; i++){
+        occupied[i] = false;
+    }
+    for(int i = 0; i<smallSize; i++){
+        int key = smaller[i];
+        int idx = (unsigned int)key % capacity;
+        while(occupied[idx] && (table[idx] != key)){
+            idx = (idx + 1)% capacity;
+        }
+        if(occupied[idx] == false){
+            table[idx] = key;
+            occupied[idx] = true;
+        }
+    }
+    int *result = malloc(smallSize * sizeof(int));
+    if(result == NULL){
+        free(table);
+        free(occupied);
+        return NULL;
+    }
+    for(int i = 0; i<largeSize; i++){
+        int key = larger[i];
+        int idx = (unsigned int)key % capacity;
+        while(occupied[idx]){
+            if(table[idx] == key){
                 break;
             }
+            idx = (idx + 1) % capacity;
         }
-        if(ax){
-            continue;
-        }
-        for(int l = 0; l<nums2Size; l++){
-            if(nums1[i] == nums2[l]){
-                arr[k] = nums1[i];
-                k++;
-                break;
+        if(occupied[idx]){
+            int dup = false;
+            for(int j = 0; j < *returnSize; j++){
+                if(result[j] == key){
+                    dup = true;
+                    break;
+                }
+            }
+            if(!dup){
+                result[*returnSize] = key;
+                (*returnSize)++;
             }
         }
     }
-    *returnSize = k;
-    return arr;
+    free(table);
+    free(occupied);
+    return result;
 }
