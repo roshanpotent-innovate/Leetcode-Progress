@@ -12,8 +12,8 @@ bool canConstruct(char* ransomNote, char* magazine) {
     for(int j = 0; j<ml; j++){
         count[magazine[j] - 'a']--;
     }
-    for(int i = 0; i<rl; i++){
-        if(count[ransomNote[i] - 'a'] > 0){
+    for(int i = 0; i<26; i++){
+        if(count[i] > 0){
             return false;
         }
     }
