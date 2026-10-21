@@ -29,7 +29,7 @@ int* intersect(int* nums1, int nums1Size, int* nums2, int nums2Size, int* return
     int *table = malloc(capacity * sizeof(int));
     int *occupied = calloc(capacity, sizeof(int));
     int *count = calloc(capacity, sizeof(int));
-    int *result = malloc(capacity * sizeof(int));
+    int *result = malloc(smallSize * sizeof(int));
 
     if(table == NULL || occupied == NULL || count == NULL || result == NULL){
         free(table);
