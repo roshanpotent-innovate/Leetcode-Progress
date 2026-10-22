@@ -6,21 +6,19 @@ bool isIsomorphic(char* s, char* t) {
         return false;
     }
 
-    int map1[256],map2[256];
+    int map1[256], map2[256];
     
-    for(int i =0;i<256;i++){
-        map1[i]=-1;
-        map2[i]=-1;
+    for(int i = 0; i < 256; i++){
+        map1[i] = 0;
+        map2[i] = 0;
     }
 
-    for(int i=0;s[i] != 0;i++){
-        char a=s[i];
-        char b=t[i];
-        if(map1[a] != -1 && map1[a] != t[i]){
+    for(int i = 0; s[i] != 0; i++){
+        if(map1[s[i]] != 0 && map1[s[i]] != t[i]){
             return false;
         }
 
-        if(map2[b] != -1 && map2[b] != s[i]){
+        if(map2[t[i]] != 0 && map2[t[i]] != s[i]){
             return false;
         }
 
